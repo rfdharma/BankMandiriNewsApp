@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">cobacobacoba</string>
+    <string name="title_activity_detail_berita_terkini">DetailBeritaTerkini</string>
+    <string name="titleberitaterkini">Berita Terkini</string>
+    <string name="titlesemuaberita">Semua Berita</string>
+    <string name="Description">Description</string>
+    <string name="Content">Content</string>
+    <string name="detailnews">Selengkapnya</string>
+    <string name="apptitle">Mandiri News</string>
+</resources>
