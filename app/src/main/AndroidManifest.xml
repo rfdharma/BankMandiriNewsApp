@@ -16,21 +16,27 @@
         android:theme="@style/Theme.Cobacobacoba"
         tools:targetApi="31">
         <activity
-            android:name=".BookmarkActivity"
+            android:name=".activity.news.TopNewsActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".activity.news.AllNewsActivity"
             android:exported="false" />
         <activity
-            android:name=".DetailAllNews"
+            android:name=".activity.BookmarkActivity"
             android:exported="false" />
         <activity
-            android:name=".DetailBeritaTerkini"
+            android:name=".activity.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.news.DetailAllNews"
+            android:exported="false" />
+        <activity
+            android:name=".activity.news.DetailTopNews"
             android:exported="false"
             android:label="@string/title_activity_detail_berita_terkini"
             android:theme="@style/Theme.Cobacobacoba" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>

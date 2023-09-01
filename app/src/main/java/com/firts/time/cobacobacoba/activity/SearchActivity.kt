@@ -1,4 +1,4 @@
-package com.firts.time.cobacobacoba
+package com.firts.time.cobacobacoba.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,10 @@ import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.first.time.cobacobacoba.adapter.AllNewsAdapter
+import com.firts.time.cobacobacoba.adapter.AllNewsAdapter
 import com.first.time.cobacobacoba.api.ApiClient
+import com.firts.time.cobacobacoba.activity.news.DetailTopNews
+import com.firts.time.cobacobacoba.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         allNewsAdapter.onItemClick = { article ->
-            val intent = Intent(this@SearchActivity, DetailBeritaTerkini::class.java)
+            val intent = Intent(this@SearchActivity, DetailTopNews::class.java)
             intent.putExtra("ArticlesItem", article)
             startActivity(intent)
         }

@@ -1,4 +1,4 @@
-package com.firts.time.cobacobacoba
+package com.firts.time.cobacobacoba.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.firts.time.cobacobacoba.R
 import com.firts.time.cobacobacoba.model.ArticlesItem
-import com.firts.time.cobacobacoba.model.Source
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-class ArticlesAdapter(var articles: List<ArticlesItem>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>() {
+class TopNewsAdapter(var articles: List<ArticlesItem>) : RecyclerView.Adapter<TopNewsAdapter.ViewHolder>() {
 
     var onItemClick : ((ArticlesItem) -> Unit)? = null
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -22,7 +22,6 @@ class ArticlesAdapter(var articles: List<ArticlesItem>) : RecyclerView.Adapter<A
         val publishTextView: TextView = itemView.findViewById(R.id.publish)
         val nameTextView: TextView = itemView.findViewById(R.id.namenews)
         val newsImage: ImageView = itemView.findViewById(R.id.newsImageView)
-//        private val contentNews: TextView = itemView.findViewById(R.id.content)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

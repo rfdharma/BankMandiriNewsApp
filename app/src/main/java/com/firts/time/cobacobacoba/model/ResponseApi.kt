@@ -2,6 +2,8 @@ package com.firts.time.cobacobacoba.model
 
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
@@ -42,7 +44,7 @@ data class ArticlesItem(
 	val url: String? = null,
 
 	@field:SerializedName("content")
-	val content: String? = null
+	val content: String? = null,
 
 ) : Parcelable
 

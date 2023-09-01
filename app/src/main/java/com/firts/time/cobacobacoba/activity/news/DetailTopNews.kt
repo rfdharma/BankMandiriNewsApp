@@ -1,4 +1,4 @@
-package com.firts.time.cobacobacoba
+package com.firts.time.cobacobacoba.activity.news
 
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +9,8 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.first.time.cobacobacoba.api.ApiClient
+import com.firts.time.cobacobacoba.R
+import com.firts.time.cobacobacoba.adapter.TopNewsAdapter
 import com.firts.time.cobacobacoba.model.ArticlesItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -17,8 +19,8 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class DetailBeritaTerkini : AppCompatActivity() {
-    private lateinit var articlesAdapter: ArticlesAdapter
+class DetailTopNews : AppCompatActivity() {
+    private lateinit var topNewsAdapter: TopNewsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_berita_terkini)
@@ -70,8 +72,8 @@ class DetailBeritaTerkini : AppCompatActivity() {
                     val articles = response.body()?.articles ?: emptyList()
                     withContext(Dispatchers.Main) {
                         // Perbarui adapter dengan data berita
-                        articlesAdapter.articles = articles
-                        articlesAdapter.notifyDataSetChanged()
+                        topNewsAdapter.articles = articles
+                        topNewsAdapter.notifyDataSetChanged()
                     }
                 }
             } catch (e: Exception) {

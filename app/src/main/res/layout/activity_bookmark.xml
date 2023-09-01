@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookmarkActivity">
+    tools:context=".activity.BookmarkActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="300dp"
@@ -22,6 +22,13 @@
         app:itemIconTint="@color/white"
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"/>
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerViewAllNews"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="end"-->
+<!--        android:orientation="vertical" />-->
 
 
 </RelativeLayout>

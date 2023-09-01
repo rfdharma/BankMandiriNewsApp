@@ -1,8 +1,9 @@
-package com.firts.time.cobacobacoba
+package com.firts.time.cobacobacoba.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.firts.time.cobacobacoba.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BookmarkActivity : AppCompatActivity() {
@@ -19,7 +20,6 @@ class BookmarkActivity : AppCompatActivity() {
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     finish()
                     true
-
                 }
                 R.id.bottom_search -> {
                     startActivity(Intent(applicationContext, SearchActivity::class.java))

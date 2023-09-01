@@ -54,8 +54,8 @@
 
         <TextView
             android:id="@+id/publish"
-            android:layout_width="150dp"
-            android:layout_height="76dp"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
             android:layout_below="@id/titleTextView"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
@@ -65,17 +65,18 @@
             android:layout_toEndOf="@id/namenews"
             android:textSize="13sp" />
 
-        <Button
+        <CheckBox
             android:id="@+id/bookmarkButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_below="@id/titleTextView"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginTop="-5dp"
+            android:layout_alignParentRight="true"
             android:layout_toEndOf="@id/publish"
             android:layout_toRightOf="@id/publish"
-            android:background="@drawable/baseline_bookmark_24" />
+            android:button="@drawable/selector_wishlist_item"/>
 
     </RelativeLayout>
 

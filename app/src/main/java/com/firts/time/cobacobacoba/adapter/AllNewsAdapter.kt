@@ -1,4 +1,4 @@
-package com.first.time.cobacobacoba.adapter
+package com.firts.time.cobacobacoba.adapter
 
 import android.view.LayoutInflater
 import android.view.View

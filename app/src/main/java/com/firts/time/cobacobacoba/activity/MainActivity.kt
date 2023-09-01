@@ -1,13 +1,24 @@
-package com.firts.time.cobacobacoba
+package com.firts.time.cobacobacoba.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.view.View
+import android.widget.TextView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.first.time.cobacobacoba.adapter.AllNewsAdapter
+import com.firts.time.cobacobacoba.adapter.AllNewsAdapter
 import com.first.time.cobacobacoba.api.ApiClient
+import com.firts.time.cobacobacoba.activity.news.DetailAllNews
+import com.firts.time.cobacobacoba.activity.news.DetailTopNews
+import com.firts.time.cobacobacoba.R
+import com.firts.time.cobacobacoba.activity.news.AllNewsActivity
+import com.firts.time.cobacobacoba.activity.news.TopNewsActivity
+import com.firts.time.cobacobacoba.adapter.TopNewsAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,9 +27,34 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var articlesAdapter: ArticlesAdapter
+    private lateinit var topNewsAdapter: TopNewsAdapter
     private lateinit var allNewsAdapter: AllNewsAdapter
 
+    fun openAllNewsPage(view: View) {
+        val textView = findViewById<TextView>(R.id.semuaberita)
+        val text = textView.text.toString()
+
+        // Membuat SpannableString dengan efek underline
+        val spannable = SpannableString(text)
+        spannable.setSpan(UnderlineSpan(), 0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        textView.text = spannable
+        val intent = Intent(this, AllNewsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openTopNewsPage(view: View) {
+        val textView = findViewById<TextView>(R.id.beritaterkini)
+        val text = textView.text.toString()
+
+        // Membuat SpannableString dengan efek underline
+        val spannable = SpannableString(text)
+        spannable.setSpan(UnderlineSpan(), 0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        textView.text = spannable
+        val intent = Intent(this, TopNewsActivity::class.java)
+        startActivity(intent)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.sleep(300)
@@ -29,16 +65,16 @@ class MainActivity : AppCompatActivity() {
         val recyclerViewAllNews: RecyclerView = findViewById(R.id.recyclerViewAllNews)
 
         // Inisialisasi adapter dengan data awal berupa daftar kosong
-        articlesAdapter = ArticlesAdapter(emptyList())
+        topNewsAdapter = TopNewsAdapter(emptyList())
         allNewsAdapter = AllNewsAdapter(emptyList())
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = articlesAdapter
+            adapter = topNewsAdapter
 
             // Access onItemClick directly
-            articlesAdapter.onItemClick = { article ->
-                val intent = Intent(this@MainActivity, DetailBeritaTerkini::class.java)
+            topNewsAdapter.onItemClick = { article ->
+                val intent = Intent(this@MainActivity, DetailTopNews::class.java)
                 intent.putExtra("ArticlesItem", article)
                 startActivity(intent)
             }
@@ -106,8 +142,8 @@ class MainActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         // Update adapter with news data
-                        articlesAdapter.articles = validArticles
-                        articlesAdapter.notifyDataSetChanged()
+                        topNewsAdapter.articles = validArticles
+                        topNewsAdapter.notifyDataSetChanged()
                     }
                 }
             } catch (e: Exception) {

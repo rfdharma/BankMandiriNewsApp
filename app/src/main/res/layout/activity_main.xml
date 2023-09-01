@@ -52,7 +52,9 @@
             android:layout_marginLeft="10dp"
             android:text="@string/titleberitaterkini"
             android:textColor="@color/blue"
-            android:textSize="18dp"/>
+            android:textSize="18dp"
+            android:clickable="true"
+            android:onClick="openTopNewsPage"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -69,7 +71,9 @@
             android:layout_marginLeft="10dp"
             android:text="@string/titlesemuaberita"
             android:textColor="@color/blue"
-            android:textSize="18dp"/>
+            android:textSize="18dp"
+            android:clickable="true"
+            android:onClick="openAllNewsPage"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewAllNews"
@@ -93,7 +97,10 @@
         android:layout_marginTop="30dp"
         android:elevation="2dp"
         app:menu="@menu/bottom_menu"
+        app:itemRippleColor="@color/blue"
         app:itemIconTint="@color/white"
-        app:itemRippleColor="@android:color/transparent"
+        android:outlineAmbientShadowColor="@color/blue"
+        android:backgroundTint="@color/blue"
+        android:outlineSpotShadowColor="@color/blue"
         app:labelVisibilityMode="unlabeled"/>
 </RelativeLayout>
