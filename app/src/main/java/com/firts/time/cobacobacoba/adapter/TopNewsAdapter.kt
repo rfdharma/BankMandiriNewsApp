@@ -48,6 +48,7 @@ class TopNewsAdapter(var articles: List<ArticlesItem>) : RecyclerView.Adapter<To
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(article)
         }
+
     }
 
 

@@ -31,7 +31,7 @@ class AllNewsActivity : AppCompatActivity() {
         }
 
         allNewsAdapter.onItemClick = { article ->
-            val intent = Intent(this@AllNewsActivity, DetailTopNews::class.java)
+            val intent = Intent(this@AllNewsActivity, DetailAllNews::class.java)
             intent.putExtra("ArticlesItem", article)
             startActivity(intent)
         }
@@ -48,10 +48,11 @@ class AllNewsActivity : AppCompatActivity() {
     private fun fetchAllNews() {
         val apiKey = "63a860ab3e8548b9bdcf5769dfb50a9d"
         val q = "indonesia"
+        val p = 1
         val apiService = ApiClient.apiService
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = apiService.getEverything(q, apiKey)
+                val response = apiService.getEverything(q, p,apiKey)
                 if (response.isSuccessful) {
                     val articles = response.body()?.articles ?: emptyList()
 

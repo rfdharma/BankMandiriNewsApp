@@ -6,13 +6,13 @@ import android.os.Bundle
 import com.firts.time.cobacobacoba.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class BookmarkActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookmark)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        bottomNavigationView.selectedItemId = R.id.bottom_save
+        bottomNavigationView.selectedItemId = R.id.bottom_user
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_home -> {
@@ -27,7 +27,7 @@ class BookmarkActivity : AppCompatActivity() {
                     finish()
                     true
                 }
-                R.id.bottom_save -> true
+                R.id.bottom_user -> true
                 else -> false
             }
         }

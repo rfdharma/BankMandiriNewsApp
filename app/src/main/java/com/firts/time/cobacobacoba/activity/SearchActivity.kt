@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firts.time.cobacobacoba.adapter.AllNewsAdapter
 import com.first.time.cobacobacoba.api.ApiClient
-import com.firts.time.cobacobacoba.activity.news.DetailTopNews
 import com.firts.time.cobacobacoba.R
+import com.firts.time.cobacobacoba.activity.news.DetailAllNews
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -17,19 +17,23 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SearchActivity : AppCompatActivity() {
+
     private lateinit var allNewsAdapter: AllNewsAdapter
+    private var currentPage = 1
+    private var isLoading = false
+    private var currentQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewAllNews)
-        allNewsAdapter = AllNewsAdapter(emptyList()) // Initialize adapter with empty list
+        allNewsAdapter = AllNewsAdapter(emptyList())
         recyclerView.adapter = allNewsAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         allNewsAdapter.onItemClick = { article ->
-            val intent = Intent(this@SearchActivity, DetailTopNews::class.java)
+            val intent = Intent(this@SearchActivity, DetailAllNews::class.java)
             intent.putExtra("ArticlesItem", article)
             startActivity(intent)
         }
@@ -38,6 +42,8 @@ class SearchActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) {
+                    currentQuery = query
+                    currentPage = 1
                     fetchAllNews(query)
                 }
                 return true
@@ -61,8 +67,8 @@ class SearchActivity : AppCompatActivity() {
                 }
                 R.id.bottom_search -> true
 
-                R.id.bottom_save -> {
-                    startActivity(Intent(applicationContext, BookmarkActivity::class.java))
+                R.id.bottom_user -> {
+                    startActivity(Intent(applicationContext, ProfileActivity::class.java))
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     finish()
                     true
@@ -70,6 +76,23 @@ class SearchActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // Implement infinite scrolling here
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading && (visibleItemCount + firstVisibleItem) >= totalItemCount - 5) {
+                    isLoading = true
+                    currentPage++
+                    currentQuery?.let { fetchAllNews(it) }
+                }
+            }
+        })
     }
 
     private fun fetchAllNews(query: String) {
@@ -78,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
         val apiService = ApiClient.apiService
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = apiService.getEverything(query, apiKey)
+                val response = apiService.getEverything(query, currentPage, apiKey)
                 if (response.isSuccessful) {
                     val articles = response.body()?.articles ?: emptyList()
 
@@ -93,9 +116,13 @@ class SearchActivity : AppCompatActivity() {
                                 article.content != null
                     }
                     withContext(Dispatchers.Main) {
-                        // Update allNewsAdapter with news data
-                        allNewsAdapter.newsList = validArticles
+                        if (currentPage == 1) {
+                            allNewsAdapter.newsList = validArticles
+                        } else {
+                            allNewsAdapter.newsList += validArticles
+                        }
                         allNewsAdapter.notifyDataSetChanged()
+                        isLoading = false
                     }
                 }
             } catch (e: Exception) {

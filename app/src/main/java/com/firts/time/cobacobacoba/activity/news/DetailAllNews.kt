@@ -12,6 +12,7 @@ import com.firts.time.cobacobacoba.adapter.AllNewsAdapter
 import com.first.time.cobacobacoba.api.ApiClient
 import com.firts.time.cobacobacoba.R
 import com.firts.time.cobacobacoba.model.ArticlesItem
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,11 +22,14 @@ import java.time.format.DateTimeFormatter
 
 class DetailAllNews : AppCompatActivity() {
 
-    private lateinit var allNewsAdapter: AllNewsAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_all_news)
+
+        val itemButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        itemButton.setOnClickListener {
+            finish()
+        }
 
         val articlesItem = intent.getParcelableExtra<ArticlesItem>("ArticlesItem")
         if (articlesItem != null) {
@@ -43,7 +47,6 @@ class DetailAllNews : AppCompatActivity() {
             publishTextView.text = articlesItem.getFormattedPublishedAt()
             descriptionTextView.text = articlesItem.description
 
-
             Glide.with(this)
                 .load(articlesItem.urlToImage)
                 .transform(RoundedCorners(20))
@@ -54,43 +57,7 @@ class DetailAllNews : AppCompatActivity() {
                 val url = articlesItem?.url
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(url)
-//                linkNews.text = articlesItem.url
                 startActivity(intent)
-            }
-
-        }
-        fetchAllNews()
-    }
-
-    private fun fetchAllNews() {
-        val apiKey = "63a860ab3e8548b9bdcf5769dfb50a9d"
-        val q = "indonesia"
-
-        val apiService = ApiClient.apiService
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val response = apiService.getEverything(q, apiKey)
-                if (response.isSuccessful) {
-                    val articles = response.body()?.articles ?: emptyList()
-
-                    val validArticles = articles.filter { article ->
-                        article.publishedAt != null &&
-                                article.author != null &&
-                                article.urlToImage != null &&
-                                article.description != null &&
-                                article.source != null &&
-                                article.title != null &&
-                                article.url != null &&
-                                article.content != null
-                    }
-                    withContext(Dispatchers.Main) {
-                        // Update allNewsAdapter with news data
-                        allNewsAdapter.newsList = validArticles
-                        allNewsAdapter.notifyDataSetChanged()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }

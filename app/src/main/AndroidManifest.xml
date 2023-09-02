@@ -22,7 +22,7 @@
             android:name=".activity.news.AllNewsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.BookmarkActivity"
+            android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SearchActivity"

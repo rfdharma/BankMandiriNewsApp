@@ -12,6 +12,7 @@ import com.first.time.cobacobacoba.api.ApiClient
 import com.firts.time.cobacobacoba.R
 import com.firts.time.cobacobacoba.adapter.TopNewsAdapter
 import com.firts.time.cobacobacoba.model.ArticlesItem
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,10 +21,15 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DetailTopNews : AppCompatActivity() {
-    private lateinit var topNewsAdapter: TopNewsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_berita_terkini)
+
+        val itemButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        itemButton.setOnClickListener {
+            finish()
+        }
 
         val articlesItem = intent.getParcelableExtra<ArticlesItem>("ArticlesItem")
         if (articlesItem != null) {
@@ -41,7 +47,6 @@ class DetailTopNews : AppCompatActivity() {
             publishTextView.text = articlesItem.getFormattedPublishedAt()
             descriptionTextView.text = articlesItem.description
 
-
             Glide.with(this)
                 .load(articlesItem.urlToImage)
                 .transform(RoundedCorners(20))
@@ -49,35 +54,10 @@ class DetailTopNews : AppCompatActivity() {
                 .into(newsImage)
 
             linkNews.setOnClickListener {
-                val url = articlesItem?.url
+                val url = articlesItem.url
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(url)
-//                linkNews.text = articlesItem.url
                 startActivity(intent)
-            }
-
-        }
-        fetchNews()
-    }
-
-    private fun fetchNews() {
-        val apiKey = "63a860ab3e8548b9bdcf5769dfb50a9d"
-        val country = "us"
-
-        val apiService = ApiClient.apiService
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val response = apiService.getTopHeadlines(country, apiKey)
-                if (response.isSuccessful) {
-                    val articles = response.body()?.articles ?: emptyList()
-                    withContext(Dispatchers.Main) {
-                        // Perbarui adapter dengan data berita
-                        topNewsAdapter.articles = articles
-                        topNewsAdapter.notifyDataSetChanged()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }

@@ -19,22 +19,25 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class TopNewsActivity : AppCompatActivity() {
-    private lateinit var TopNewsAdapter: TopNewsAdapter
+
+    private lateinit var topNewsAdapter: TopNewsAdapter
     private lateinit var recyclerView: RecyclerView
+    private var currentPage = 1
+    private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_top_news)
 
         recyclerView = findViewById(R.id.recyclerView)
-        TopNewsAdapter = TopNewsAdapter(emptyList())
+        topNewsAdapter = TopNewsAdapter(emptyList())
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@TopNewsActivity)
-            adapter = TopNewsAdapter
+            adapter = topNewsAdapter
         }
 
-        TopNewsAdapter.onItemClick = { article ->
+        topNewsAdapter.onItemClick = { article ->
             val intent = Intent(this@TopNewsActivity, DetailTopNews::class.java)
             intent.putExtra("ArticlesItem", article)
             startActivity(intent)
@@ -44,6 +47,23 @@ class TopNewsActivity : AppCompatActivity() {
         itemButton.setOnClickListener {
             finish()
         }
+
+        // Implementasi infinite scrolling
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading && (visibleItemCount + firstVisibleItem) >= totalItemCount - 5) {
+                    isLoading = true
+                    currentPage++
+                    fetchNews()
+                }
+            }
+        })
 
         // Panggil fungsi untuk mengambil data berita
         fetchNews()
@@ -56,26 +76,22 @@ class TopNewsActivity : AppCompatActivity() {
         val apiService = ApiClient.apiService
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = apiService.getTopHeadlines(country, apiKey)
+                val response = apiService.getTopHeadlines(country, currentPage, apiKey)
                 if (response.isSuccessful) {
                     val articles = response.body()?.articles ?: emptyList()
                     withContext(Dispatchers.Main) {
-                        // Perbarui adapter dengan data berita
-                        TopNewsAdapter.articles = articles
-                        TopNewsAdapter.notifyDataSetChanged()
+                        if (currentPage == 1) {
+                            topNewsAdapter.articles = articles
+                        } else {
+                            topNewsAdapter.articles += articles
+                        }
+                        topNewsAdapter.notifyDataSetChanged()
+                        isLoading = false
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-    }
-
-    private fun ArticlesItem.getFormattedPublishedAt(): String {
-        val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        val publishedAtLocalDateTime = LocalDateTime.parse(publishedAt, dateTimeFormatter)
-
-        val formattedDateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy")
-        return publishedAtLocalDateTime.format(formattedDateTimeFormatter)
     }
 }

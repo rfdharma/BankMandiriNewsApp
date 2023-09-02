@@ -85,22 +85,22 @@
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="300dp"
-        android:layout_centerInParent="true"
-        android:layout_height="50dp"
         android:id="@+id/bottomNavigation"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_background"
-        android:layout_marginEnd="20dp"
+        android:layout_centerInParent="true"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="30dp"
-        android:elevation="2dp"
-        app:menu="@menu/bottom_menu"
-        app:itemRippleColor="@color/blue"
-        app:itemIconTint="@color/white"
-        android:outlineAmbientShadowColor="@color/blue"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bottom_background"
         android:backgroundTint="@color/blue"
+        android:elevation="2dp"
+        android:outlineAmbientShadowColor="@color/blue"
         android:outlineSpotShadowColor="@color/blue"
-        app:labelVisibilityMode="unlabeled"/>
+        app:itemIconTint="@color/white"
+        app:itemRippleColor="@color/blue"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_menu" />
 </RelativeLayout>
